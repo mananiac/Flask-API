@@ -9,7 +9,7 @@
 
 
 2. Install all dependencies from requirements.txt
-``
+
 `pip3 install -r requirements.txt `
 
 3. Run the flask program 
