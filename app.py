@@ -16,7 +16,6 @@ sqlite_connection.close()
 
 class Config():
     SQLALCHEMY_DATABASE_URI = "sqlite:///DivvyChallenge.db"
-    SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get("SQLALCHEMY_TRACK_MODIFICATIONS")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 app = Flask(__name__)
