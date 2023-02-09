@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manan Sagar</title>
+</head>
+<body>
+    
+
+    <h3>First Endpoint: <code><h4>trips</h4></code></h3>
+    Parameters: <code>starttime</code> , <code> endtime</code> , <code> from_station_id </code>, <code> to_station_id </code> 
+    <br><br>
+    Example1: <code>/trips?starttime=2013-06-28&endtime=2013-06-30</code><br>
+    Returns the average duration for that time span <br><br>
+    Example2: <code>/trips?starttime=2013-06-28&endtime=2013-06-30&from_station_id=90 </code><br>
+    Returns the average duration for that time span and further filters the results by the stations that the trip started from<br><br>
+    Example3: <code>/trips?starttime=2013-06-28&endtime=2013-06-30&from_station_id=90&to_station_id=90 </code><br>
+    Returns the average duration for that time span further filters the results by the stations that the trip started from and ended at<br><br>
+
+
+
+    <h3>Second Endpoint: <code><h4>tripsbike</h4></code></h3>
+    Parameters: <code>bike_id</code> , <code> starttime</code> , <code> stop </code>
+    <br><br>
+    Example: <code>/tripsbike?starttime=2013-06-28&endtime=2013-06-30&bike_id=58 </code><br>
+    Returns the average duration for that time span and further filters the results by the bike_id<br><br>
+</body>
+</html>
