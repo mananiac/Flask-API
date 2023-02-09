@@ -8,10 +8,10 @@ import datetime as datetime
 from flask import request
 
 db = pd.read_csv("DivvyChallenge.csv")
-engine = create_engine('sqlite:///DivvyChallenge.db', echo=True)
-sqlite_connection = engine.connect()
+engine = create_engine('sqlite:///DivvyChallenge.db', echo=False)
+sqlite_connection = engine.raw_connection()
 sqlite_table = "Trips"
-db.to_sql(sqlite_table, sqlite_connection)
+db.to_sql(sqlite_table, sqlite_connection,if_exists='append')
 sqlite_connection.close()
 
 class Config():
