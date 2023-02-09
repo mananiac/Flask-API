@@ -4,16 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from flask_migrate import Migrate
 import os
-import csv
-import json
 import datetime as datetime
 from flask import request
-
-# Load pre-built time series example dataset
-# df.set_index("trip_id", inplace=True)
-# db = SQLAlchemy.create_engine('sqlite:///DivvyChallenge.db',{})
-# df.to_sql('DivvyChallenge', db, if_exists="replace")
-
 
 db = pd.read_csv("DivvyChallenge.csv")
 engine = create_engine('sqlite:///DivvyChallenge.db', echo=True)
@@ -23,7 +15,6 @@ db.to_sql(sqlite_table, sqlite_connection)
 sqlite_connection.close()
 
 class Config():
-    # SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
     SQLALCHEMY_DATABASE_URI = "sqlite:///DivvyChallenge.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get("SQLALCHEMY_TRACK_MODIFICATIONS")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -43,8 +34,6 @@ class Trips(db.Model):
     to_station_id = db.Column(db.Integer)
     to_station_name = db.Column(db.String)
     usertype	= db.Column(db.String)
-    # gender = db.Column(db.String)
-    # birthdate = db.Column(db.Date)
     trip_duration = db.Column(db.Integer)
     
     def from_dict(self, data):
@@ -57,8 +46,6 @@ class Trips(db.Model):
         self.to_station_id = data['to_station_id'],
         self.to_station_name = data['to_station_name'],
         self.usertype = data['usertype'],
-        # self.gender = data['gender'],
-        # self.birthdate = data['bi render_templaterthdate'],
         self.trip_duration = data['trip_duration']
     
     def to_dict(self):
@@ -67,8 +54,6 @@ class Trips(db.Model):
         "bikeid":self. bikeid,"from_station_id":self.from_station_id, 
         "from_station_name":self.from_station_name,"to_station_id":self.to_station_id, 
         "to_station_name":self.to_station_name,"usertype":self.usertype
-        # "genders":self.gender
-        # "birthdate":self.birthdate, "trip_duration":self.trip_duration
         }
 
 
@@ -77,14 +62,7 @@ class Trips(db.Model):
 def home():
     return render_template("home.html")
 
-# @app.get('/trips')                                     
-# def get_trips():
-#     trips = Trips.query.all()
-#     return make_response(json.dumps([trip.to_dict() for trip in trips],indent=4, sort_keys=True, default=str))
-
-# @app.get('/trips/<start>/<stop>')
 @app.get('/trips')
-# def get_average_trip_time(start, stop):
 def get_average_trip_time():
 
     start = request.args.get('starttime')
@@ -99,19 +77,16 @@ def get_average_trip_time():
                                         Trips.to_station_id == to_station_id,
                                         Trips.starttime >= datetime.datetime.strptime(start, '%Y-%m-%d'),
                                         Trips.stoptime <= datetime.datetime.strptime(stop, '%Y-%m-%d') ).all()
-        print(valid_rows)
+        # print(valid_rows)
 
 
     elif from_station_id:
-        # Find the station name from the input station ID
         from_station_name = Trips.query.filter(Trips.from_station_id == from_station_id).first().from_station_name
-        # Get rows with this from_station_id and has a start and end time within the time period inputted
         valid_rows = Trips.query.filter(Trips.from_station_id == from_station_id, 
                                             Trips.starttime >= datetime.datetime.strptime(start, '%Y-%m-%d'),
                                             Trips.stoptime <= datetime.datetime.strptime(stop, '%Y-%m-%d') ).all()
     else:
 
-        # Only time period was given
         valid_rows = Trips.query.filter(Trips.starttime >= datetime.datetime.strptime(start, '%Y-%m-%d'),
                                             Trips.stoptime <= datetime.datetime.strptime(stop, '%Y-%m-%d') ).all()
         
@@ -144,15 +119,13 @@ def get_average_trip_time_bike():
     stop = request.args.get('endtime')
     bike_id = request.args.get('bike_id')
 
-    # Find the station name from the input station ID
-    # from_station_name = Trips.query.filter(Trips.bike_id == bike_id).first().from_station_name
-    # Get rows with this from_station_id and has a start and end time within the time period inputted
     valid_rows = Trips.query.filter(Trips.bikeid == bike_id, 
                                     Trips.starttime >= datetime.datetime.strptime(start, '%Y-%m-%d'),
                                     Trips.stoptime <= datetime.datetime.strptime(stop, '%Y-%m-%d') ).all()
 
     avg_duration = sum(record.trip_duration for record in valid_rows) / len(valid_rows)
-    print(valid_rows)
+
+    # print(valid_rows)
 
     return jsonify({
             'bike_id': bike_id,
