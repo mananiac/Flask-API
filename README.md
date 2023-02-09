@@ -2,7 +2,7 @@
 
 1. Create a virtual environment and activate it
 
-`$ mkdir myproject
+`$ mkdir myproject<br>
 $ cd myproject
 $ python3 -m venv venv
 $ . venv/bin/activate`
