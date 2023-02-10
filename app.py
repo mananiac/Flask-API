@@ -10,7 +10,7 @@ from flask import request
 
 db = pandas.read_csv("DivvyChallenge.csv")
 # db = open("DivvyChallenge.csv","r")
-engine = create_engine('sqlite:///DivvyChallenge.db', echo=True)
+engine = create_engine('sqlite:///instance/DivvyChallenge.db', echo=True)
 # sqlite_connection = engine.raw_connection()
 sqlite_table = "Trips"
 db.to_sql(sqlite_table,engine,if_exists='replace')
