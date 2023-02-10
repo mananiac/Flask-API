@@ -1,5 +1,6 @@
 # Flask-API
 
+0. Install Python
 1. Create a virtual environment and activate it
 
 `$ mkdir myproject`
@@ -13,5 +14,6 @@
 `pip3 install -r requirements.txt `
 
 3. Run the flask program 
-`flask run`
+`flask run` or `python3 app.py`
+
 4. A new database will be created from the CSV file :) 
