@@ -13,17 +13,18 @@ db = pandas.read_csv("DivvyChallenge.csv")
 engine = create_engine('sqlite:///DivvyChallenge.db', echo=True)
 # sqlite_connection = engine.raw_connection()
 sqlite_table = "Trips"
-db.to_sql(sqlite_table,engine,if_exists='append')
+db.to_sql(sqlite_table,engine,if_exists='replace')
 # engine.close()
 
 class Config():
     SQLALCHEMY_DATABASE_URI = "sqlite:///DivvyChallenge.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-app = Flask(__name__)
+app = Flask(__name__,instance_relative_config=True)
 app.config.from_object(Config)
 db= SQLAlchemy(app)
 migrate=Migrate(app,db)
+
 
 class Trips(db.Model):
     trip_id = db.Column(db.Integer, primary_key=True)
@@ -34,7 +35,9 @@ class Trips(db.Model):
     from_station_name = db.Column(db.String)
     to_station_id = db.Column(db.Integer)
     to_station_name = db.Column(db.String)
-    usertype	= db.Column(db.String)
+    usertype = db.Column(db.String)
+    # gender = db.Column(db.String)
+    # birthday = db.Column(db.DateTime)
     trip_duration = db.Column(db.Integer)
     
 
@@ -103,14 +106,15 @@ def get_average_trip_time_bike():
     start = request.args.get('starttime')
     stop = request.args.get('endtime')
     bike_id = request.args.get('bike_id')
+#     print(start,stop,bike_id,Trips.bikeid)
 
     valid_rows = Trips.query.filter(Trips.bikeid == bike_id, 
                                     Trips.starttime >= datetime.datetime.strptime(start, '%Y-%m-%d'),
                                     Trips.stoptime <= datetime.datetime.strptime(stop, '%Y-%m-%d') ).all()
+#     print(valid_rows)
 
     avg_duration = sum(record.trip_duration for record in valid_rows) / len(valid_rows)
 
-    # print(valid_rows)
 
     return jsonify({
             'bike_id': bike_id,
