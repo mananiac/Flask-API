@@ -14,4 +14,4 @@
 
 3. Run the flask program 
 `flask run`
-4. A new database will be created from the CSV file. Delete the DivvyChallenge.db file after stopping the server :) 
+4. A new database will be created from the CSV file :) 
