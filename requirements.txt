@@ -19,7 +19,7 @@ marshmallow-jsonapi==0.24.0
 numpy==1.24.1
 packaging==23.0
 pandas==1.5.3
-psycopg2-binary==2.9.2
+psycopg2-binary
 pycodestyle==2.10.0
 pyodbc==4.0.35
 python-dateutil==2.8.2
