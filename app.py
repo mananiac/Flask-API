@@ -1,14 +1,16 @@
 from flask import Flask, request, make_response, g,  render_template,  jsonify 
-import pandas as pd
+import pandas 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from flask_migrate import Migrate
 import os
+from csv import reader
 import datetime as datetime
 from flask import request
 
-db = pd.read_csv("DivvyChallenge.csv")
-engine = create_engine('sqlite:///DivvyChallenge.db', echo=False)
+db = pandas.read_csv("DivvyChallenge.csv")
+# db = open("DivvyChallenge.csv","r")
+engine = create_engine('sqlite:///DivvyChallenge.db', echo=True)
 sqlite_connection = engine.raw_connection()
 sqlite_table = "Trips"
 db.to_sql(sqlite_table, sqlite_connection,if_exists='append')
@@ -35,27 +37,11 @@ class Trips(db.Model):
     usertype	= db.Column(db.String)
     trip_duration = db.Column(db.Integer)
     
-    def from_dict(self, data):
-        self.trip_id = data['trip_id'],
-        self.starttime = data['starttime'],
-        self.stoptime = data['stoptime'],
-        self.bikeid = data['bikeid'],
-        self.from_station_id = data['from_station_id'],
-        self.from_station_name = data['from_station_name'],
-        self.to_station_id = data['to_station_id'],
-        self.to_station_name = data['to_station_name'],
-        self.usertype = data['usertype'],
-        self.trip_duration = data['trip_duration']
-    
-    def to_dict(self):
-        return {"trip_id ": self.trip_id
-        , "starttime":self.starttime," stoptime":self.stoptime,
-        "bikeid":self. bikeid,"from_station_id":self.from_station_id, 
-        "from_station_name":self.from_station_name,"to_station_id":self.to_station_id, 
-        "to_station_name":self.to_station_name,"usertype":self.usertype
-        }
 
 
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 @app.route("/")
 def home():
