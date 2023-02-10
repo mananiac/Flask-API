@@ -14,6 +14,6 @@
 `pip3 install -r requirements.txt `
 
 3. Run the flask program 
-`flask run` or `python3 app.py`
+`python3 app.py`
 
 4. A new database will be created from the CSV file :) 
