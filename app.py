@@ -11,10 +11,10 @@ from flask import request
 db = pandas.read_csv("DivvyChallenge.csv")
 # db = open("DivvyChallenge.csv","r")
 engine = create_engine('sqlite:///DivvyChallenge.db', echo=True)
-sqlite_connection = engine.raw_connection()
+# sqlite_connection = engine.raw_connection()
 sqlite_table = "Trips"
-db.to_sql(sqlite_table, sqlite_connection,if_exists='append')
-sqlite_connection.close()
+db.to_sql(sqlite_table,engine,if_exists='append')
+# engine.close()
 
 class Config():
     SQLALCHEMY_DATABASE_URI = "sqlite:///DivvyChallenge.db"
